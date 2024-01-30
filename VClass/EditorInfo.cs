@@ -25,7 +25,7 @@ public class Group : BaseVClass
 
 public class Hidden : BaseVClass
 {
-    public override string ClassHeader => "group";
+    public override string ClassHeader => "hidden";
     public override Dictionary<string, VProperty> Properties { get; set; }
     public BaseVClass Class;
     public Editor Editor;

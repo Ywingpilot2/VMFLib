@@ -34,8 +34,8 @@ public class Connection
         var properties = conSplit[1].Trim('"').Split(',');
         TargetName = properties[0];
         InputName = properties[1];
-        Value = new VProperty(properties[2]);
-        Delay = string.IsNullOrEmpty(properties[3]) ? 0.0 : double.Parse(properties[3]); //Delay may not exist
+        Value = string.IsNullOrEmpty(properties[2]) ? null : new VProperty(properties[2]); //May not have property
+        Delay = double.Parse(properties[3]);
         Refires = int.Parse(properties[4]);
     }
 

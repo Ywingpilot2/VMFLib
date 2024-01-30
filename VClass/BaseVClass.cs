@@ -15,4 +15,9 @@ public abstract class BaseVClass
     {
         Properties = new Dictionary<string, VProperty>();
     }
+
+    public override string ToString()
+    {
+        return ClassHeader ?? base.ToString();
+    }
 }

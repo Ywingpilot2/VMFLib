@@ -165,10 +165,10 @@ namespace VMFLib.Parsers
             
             //TODO HACK: We don't want to read the header and bracket but sometimes we only need to skip over the bracket, so this solves the issue
             //This will also skip over comments
-            string line = _reader.ReadLine();
+            string line = _reader.ReadLine().Trim();
             while (line != "{")
             {
-                line = _reader.ReadLine();
+                line = _reader.ReadLine().Trim();
             }
             line = _reader.ReadLine().Trim();
             
@@ -193,10 +193,10 @@ namespace VMFLib.Parsers
             
             //TODO HACK: We don't want to read the header and bracket but sometimes we only need to skip over the bracket, so this solves the issue
             //This will also skip over comments
-            string line = _reader.ReadLine();
+            string line = _reader.ReadLine().Trim();
             while (line != "{")
             {
-                line = _reader.ReadLine();
+                line = _reader.ReadLine().Trim();
             }
             line = _reader.ReadLine().Trim();
             
@@ -521,10 +521,10 @@ namespace VMFLib.Parsers
             
             //TODO HACK: We don't want to read the header and bracket but sometimes we only need to skip over the bracket, so this solves the issue
             //This will also skip over comments
-            string line = _reader.ReadLine();
+            string line = _reader.ReadLine().Trim();
             while (line != "{")
             {
-                line = _reader.ReadLine();
+                line = _reader.ReadLine().Trim();
             }
             line = _reader.ReadLine().Trim();
             
@@ -564,10 +564,10 @@ namespace VMFLib.Parsers
             
             //TODO HACK: We don't want to read the header and bracket but sometimes we only need to skip over the bracket, so this solves the issue
             //This will also skip over comments
-            string line = _reader.ReadLine();
+            string line = _reader.ReadLine().Trim();
             while (line != "{")
             {
-                line = _reader.ReadLine();
+                line = _reader.ReadLine().Trim();
             }
             line = _reader.ReadLine().Trim();
             
@@ -605,10 +605,10 @@ namespace VMFLib.Parsers
             
             //TODO HACK: We don't want to read the header and bracket but sometimes we only need to skip over the bracket, so this solves the issue
             //This will also skip over comments
-            string line = _reader.ReadLine();
+            string line = _reader.ReadLine().Trim();
             while (line != "{")
             {
-                line = _reader.ReadLine();
+                line = _reader.ReadLine().Trim();
             }
             line = _reader.ReadLine();
             
@@ -656,10 +656,10 @@ namespace VMFLib.Parsers
             
             //TODO HACK: We don't want to read the header and bracket but sometimes we only need to skip over the bracket, so this solves the issue
             //This will also skip over comments
-            string line = _reader.ReadLine();
+            string line = _reader.ReadLine().Trim();
             while (line != "{")
             {
-                line = _reader.ReadLine();
+                line = _reader.ReadLine().Trim();
             }
             line = _reader.ReadLine().Trim(); //{
             

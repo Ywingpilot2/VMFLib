@@ -16,7 +16,7 @@ namespace VMFLib.VClass
 
         public VProperty(string property)
         {
-            property.Trim();
+            property = property.Trim();
 
             int commentPosition = property.IndexOf("//"); //Remove comments
             if (commentPosition != -1 && commentPosition != 0)
@@ -25,8 +25,8 @@ namespace VMFLib.VClass
             }
             
             var parsed = property.Split(new []{"\" \""}, StringSplitOptions.RemoveEmptyEntries);
-            Name = parsed[0].Trim();
-            _property = parsed[1].Trim();
+            Name = parsed[0].Trim(new []{' ', '"'});
+            _property = parsed[1].Trim().Trim(new []{' ', '"'});
         }
 
         public int Int()
