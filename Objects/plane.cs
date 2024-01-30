@@ -46,6 +46,7 @@ public class UVAxis
 public class DispRows
 {
     public Dictionary<int, List<string>> RowNormals = new Dictionary<int, List<string>>();
+    public Dictionary<int, List<string>> RowOffsetNormals = new Dictionary<int, List<string>>();
     public Dictionary<int, List<string>> RowDistances = new Dictionary<int, List<string>>(); //TODO: List<decimal>
     public Dictionary<int, List<string>> RowOffsets = new Dictionary<int, List<string>>(); //TODO: List<decimal>
     public Dictionary<int, List<string>> RowAlphas = new Dictionary<int, List<string>>(); //TODO: List<decimal>
@@ -69,8 +70,8 @@ public class DispRows
 
     public void ParseNormals(string normals)
     {
-        string[] rows = normals.Split('\n');
-        for (int row = 0; row <= rows.Length; row++)
+        string[] rows = normals.Split(new []{'\n'}, StringSplitOptions.RemoveEmptyEntries);
+        for (int row = 0; row != rows.Length; row++)
         {
             string currentNorm = rows[row].Split(new []{"\" \""}, StringSplitOptions.RemoveEmptyEntries)[1];
             currentNorm = currentNorm.Trim('"');
@@ -78,10 +79,21 @@ public class DispRows
         }
     }
     
+    public void ParseOffsetNormals(string normals)
+    {
+        string[] rows = normals.Split(new []{'\n'}, StringSplitOptions.RemoveEmptyEntries);
+        for (int row = 0; row != rows.Length; row++)
+        {
+            string currentNorm = rows[row].Split(new []{"\" \""}, StringSplitOptions.RemoveEmptyEntries)[1];
+            currentNorm = currentNorm.Trim('"');
+            RowOffsetNormals.Add(row, currentNorm.Split(' ').ToList());
+        }
+    }
+    
     public void ParseDistances(string distances)
     {
-        string[] rows = distances.Split('\n');
-        for (int row = 0; row <= rows.Length; row++)
+        string[] rows = distances.Split(new []{'\n'}, StringSplitOptions.RemoveEmptyEntries);
+        for (int row = 0; row != rows.Length; row++)
         {
             string currentDist = rows[row].Split(new []{"\" \""}, StringSplitOptions.RemoveEmptyEntries)[1];
             currentDist = currentDist.Trim('"');
@@ -91,8 +103,8 @@ public class DispRows
 
     public void ParseOffsets(string offsets)
     {
-        string[] rows = offsets.Split('\n');
-        for (int row = 0; row <= rows.Length; row++)
+        string[] rows = offsets.Split(new []{'\n'}, StringSplitOptions.RemoveEmptyEntries);
+        for (int row = 0; row != rows.Length; row++)
         {
             string currentOffset = rows[row].Split(new []{"\" \""}, StringSplitOptions.RemoveEmptyEntries)[1];
             currentOffset = currentOffset.Trim('"');
@@ -102,8 +114,8 @@ public class DispRows
     
     public void ParseAlpha(string alpha)
     {
-        string[] rows = alpha.Split('\n');
-        for (int row = 0; row <= rows.Length; row++)
+        string[] rows = alpha.Split(new []{'\n'}, StringSplitOptions.RemoveEmptyEntries);
+        for (int row = 0; row != rows.Length; row++)
         {
             string currentAlpha = rows[row].Split(new []{"\" \""}, StringSplitOptions.RemoveEmptyEntries)[1];
             currentAlpha = currentAlpha.Trim('"');
@@ -113,8 +125,8 @@ public class DispRows
     
     public void ParseTriangleTag(string alpha)
     {
-        string[] rows = alpha.Split('\n');
-        for (int row = 0; row <= rows.Length; row++)
+        string[] rows = alpha.Split(new []{'\n'}, StringSplitOptions.RemoveEmptyEntries);;
+        for (int row = 0; row != rows.Length; row++)
         {
             string currentAlpha = rows[row].Split(new []{"\" \""}, StringSplitOptions.RemoveEmptyEntries)[1];
             currentAlpha = currentAlpha.Trim('"');
@@ -124,15 +136,13 @@ public class DispRows
     
     public void ParseAllowedVerts(string av)
     {
-        string[] rows = av.Split('\n');
-        for (int row = 0; row <= rows.Length; row++)
+        string[] rows = av.Split(new []{'\n'}, StringSplitOptions.RemoveEmptyEntries);
+        for (int row = 0; row != rows.Length; row++)
         {
-            int idx = int.Parse(rows[row].Split(new []{"\" \""}, StringSplitOptions.RemoveEmptyEntries)[0]); //TODO: Figure out what this actually is?
+            int idx = int.Parse(rows[row].Split(new []{"\" \""}, StringSplitOptions.RemoveEmptyEntries)[0].Trim('"')); //TODO: Figure out what this actually is?
             string currentAv = rows[row].Split(new []{"\" \""}, StringSplitOptions.RemoveEmptyEntries)[1];
             currentAv = currentAv.Trim('"');
-            RowTriangleTags.Add(idx, currentAv.Split(' ').ToList());
+            AllowedVerts.Add(idx, currentAv.Split(' ').ToList());
         }
     }
 }
-
-//TODO: offset normals

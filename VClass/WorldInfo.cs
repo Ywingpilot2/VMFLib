@@ -20,7 +20,7 @@ public class World : BaseVClass
     public override string ClassHeader => "world";
     public override Dictionary<string, VProperty> Properties { get; set; }
     public List<Solid> Solids { get; set; } = new List<Solid>();
-    public List<Group> Groups { get; set; }
+    public List<Group> Groups { get; set; } = new List<Group>();
     public List<Hidden> HiddenClasses { get; set; } = new List<Hidden>();
 
     public int Id => Properties["id"].Int();
@@ -35,7 +35,7 @@ public class Solid : BaseVClass
     public override Dictionary<string, VProperty> Properties { get; set; }
     
     public int Id => Properties["id"].Int();
-    public Side Side;
+    public List<Side> Sides = new List<Side>();
     public Editor Editor;
 }
 

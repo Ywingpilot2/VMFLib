@@ -373,7 +373,7 @@ namespace VMFLib.Parsers
                 {
                     case "side":
                     {
-                        solid.Side = ReadSide();
+                        solid.Sides.Add(ReadSide());
                     } break;
                     case "editor":
                     {
@@ -489,59 +489,64 @@ namespace VMFLib.Parsers
                     case "allowed_verts":
                     {
                         _reader.ReadLine(); // {
+                        line = _reader.ReadLine().Trim();
                         string normalData = "";
                         while (line != "}")
                         {
-                            line = _reader.ReadLine().Trim();
                             normalData += $"{line}\n";
+                            line = _reader.ReadLine().Trim();
                         }
 
-                        displacement.Rows.ParseAlpha(normalData);
+                        displacement.Rows.ParseAllowedVerts(normalData);
                     } break;
                     case "triangle_tags":
                     {
                         _reader.ReadLine(); // {
+                        line = _reader.ReadLine().Trim();
                         string normalData = "";
                         while (line != "}")
                         {
-                            line = _reader.ReadLine().Trim();
                             normalData += $"{line}\n";
+                            line = _reader.ReadLine().Trim();
                         }
 
-                        displacement.Rows.ParseAlpha(normalData);
+                        displacement.Rows.ParseTriangleTag(normalData);
                     } break;
                     case "alphas":
                     {
                         _reader.ReadLine(); // {
+                        line = _reader.ReadLine().Trim();
                         string normalData = "";
                         while (line != "}")
                         {
-                            line = _reader.ReadLine().Trim();
                             normalData += $"{line}\n";
+                            line = _reader.ReadLine().Trim();
                         }
 
                         displacement.Rows.ParseAlpha(normalData);
                     } break;
-                    case "offset_normals": //TODO:
+                    case "offset_normals":
                     {
                         _reader.ReadLine(); // {
+                        line = _reader.ReadLine().Trim();
                         string normalData = "";
                         while (line != "}")
                         {
-                            line = _reader.ReadLine().Trim();
                             normalData += $"{line}\n";
+                            line = _reader.ReadLine().Trim();
                         }
 
-                        displacement.Rows.ParseNormals(normalData);
+                        displacement.Rows.ParseOffsetNormals(normalData);
                     } break;
                     case "offsets":
                     {
                         _reader.ReadLine(); // {
+                        line = _reader.ReadLine().Trim();
                         string normalData = "";
                         while (line != "}")
                         {
-                            line = _reader.ReadLine().Trim();
                             normalData += $"{line}\n";
+                            line = _reader.ReadLine().Trim();
                         }
 
                         displacement.Rows.ParseOffsets(normalData);
@@ -549,11 +554,12 @@ namespace VMFLib.Parsers
                     case "distances":
                     {
                         _reader.ReadLine(); // {
+                        line = _reader.ReadLine().Trim();
                         string normalData = "";
                         while (line != "}")
                         {
-                            line = _reader.ReadLine().Trim();
                             normalData += $"{line}\n";
+                            line = _reader.ReadLine().Trim();
                         }
 
                         displacement.Rows.ParseDistances(normalData);
@@ -561,11 +567,12 @@ namespace VMFLib.Parsers
                     case "normals":
                     {
                         _reader.ReadLine(); // {
+                        line = _reader.ReadLine().Trim();
                         string normalData = "";
                         while (line != "}")
                         {
-                            line = _reader.ReadLine().Trim();
                             normalData += $"{line}\n";
+                            line = _reader.ReadLine().Trim();
                         }
 
                         displacement.Rows.ParseNormals(normalData);
@@ -616,11 +623,11 @@ namespace VMFLib.Parsers
 
                 switch (line.Trim())
                 {
-                    case "Entity":
+                    case "entity":
                     {
                         hidden.Class = ReadEntity();
                     } break;
-                    case "Solid":
+                    case "solid":
                     {
                         hidden.Class = ReadSolid();
                     } break;
@@ -667,9 +674,26 @@ namespace VMFLib.Parsers
                     line = _reader.ReadLine().Trim();
                     continue;
                 }
-
-                group.AddProperty(new VProperty(line));
                 
+                switch (line.Trim())
+                {
+                    case "editor":
+                    {
+                        group.Editor = ReadEditor();
+                    } break;
+                    default:
+                    {
+                        if (line.Trim().StartsWith("\""))
+                        {
+                            group.AddProperty(new VProperty(line));
+                        }
+                        else // Probably a class
+                        {
+                            group.SubClasses.Add(ReadGenericClass(line)); //TODO: It'd probably be better if we used ReadClass() instead?
+                        }
+                    } break;
+                }
+
                 line = _reader.ReadLine().Trim();
             }
 
