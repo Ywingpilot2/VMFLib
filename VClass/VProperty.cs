@@ -108,5 +108,10 @@ namespace VMFLib.VClass
             _property = value.ToString();
             return true;
         }
+
+        public override string ToString()
+        {
+            return Name ?? base.ToString();
+        }
     }
 }

@@ -54,8 +54,18 @@ namespace VMFLib.Parsers
                         return ReadWorld();
                     }
                     default:
-                        line = _reader.ReadLine();
-                        continue; //TODO: Better error handling, this will continue until it finds a proper class
+                    {
+                        //Blank space; skip over
+                        if (string.IsNullOrEmpty(line) || string.IsNullOrWhiteSpace(line) || line.Trim().StartsWith("//"))
+                        {
+                            line = _reader.ReadLine();
+                        }
+                        else //probably a class we don't natively support, use the generic class reader
+                        {
+                            return ReadGenericClass(line.Trim());
+                        }
+                        
+                    } continue; //TODO: Better error handling, this will continue until it finds a proper class
                 }
             }
 
@@ -145,11 +155,18 @@ namespace VMFLib.Parsers
                 {
                     case "camera":
                     {
-                        cameras.Cameras.Add(ReadCamera());
+                        cameras.SubClasses.Add(ReadCamera());
                     } break;
                     default:
                     {
-                        cameras.AddProperty(new VProperty(line));
+                        if (line.Trim().StartsWith("\""))
+                        {
+                            cameras.AddProperty(new VProperty(line));
+                        }
+                        else // Probably a class
+                        {
+                            cameras.SubClasses.Add(ReadGenericClass(line)); //TODO: It'd probably be better if we used ReadClass() instead?
+                        }
                     } break;
                 }
                 
@@ -240,7 +257,7 @@ namespace VMFLib.Parsers
                     continue;
                 }
                 
-                visGroups.Groups.Add(ReadVisGroup());
+                visGroups.SubClasses.Add(ReadVisGroup());
                 
                 line = _reader.ReadLine();
             }
@@ -265,7 +282,7 @@ namespace VMFLib.Parsers
                 //Is this a child visgroup, or a property of this visgroup?
                 if (line == "visgroup")
                 {
-                    visGroup.Groups.Add(ReadVisGroup());
+                    visGroup.SubClasses.Add(ReadVisGroup());
                 }
                 else
                 {
@@ -319,7 +336,14 @@ namespace VMFLib.Parsers
                     } break;
                     default:
                     {
-                        world.AddProperty(new VProperty(line));
+                        if (line.Trim().StartsWith("\""))
+                        {
+                            world.AddProperty(new VProperty(line));
+                        }
+                        else // Probably a class
+                        {
+                            world.SubClasses.Add(ReadGenericClass(line)); //TODO: It'd probably be better if we used ReadClass() instead?
+                        }
                     } break;
                 }
                 
@@ -357,7 +381,14 @@ namespace VMFLib.Parsers
                     } break;
                     default:
                     {
-                        solid.AddProperty(new VProperty(line));
+                        if (line.Trim().StartsWith("\""))
+                        {
+                            solid.AddProperty(new VProperty(line));
+                        }
+                        else // Probably a class
+                        {
+                            solid.SubClasses.Add(ReadGenericClass(line)); //TODO: It'd probably be better if we used ReadClass() instead?
+                        }
                     } break;
                 }
 
@@ -383,13 +414,25 @@ namespace VMFLib.Parsers
 
                 switch (line)
                 {
+                    //Hammer++ has its own way of storing verts which needs to be processed uniquely
+                    case "vertices_plus":
+                    {
+                        side.SubClasses.Add(ReadVPlus());
+                    } break;
                     case "dispinfo":
                     {
                         side.DisplacementInfo = ReadDisplacement();
                     } break;
                     default:
                     {
-                        side.AddProperty(new VProperty(line));
+                        if (line.Trim().StartsWith("\""))
+                        {
+                            side.AddProperty(new VProperty(line));
+                        }
+                        else // Probably a class
+                        {
+                            side.SubClasses.Add(ReadGenericClass(line)); //TODO: It'd probably be better if we used ReadClass() instead?
+                        }
                     } break;
                 }
 
@@ -397,6 +440,34 @@ namespace VMFLib.Parsers
             }
 
             return side;
+        }
+
+        private VerticesPlus ReadVPlus()
+        {
+            VerticesPlus verticesPlus = new VerticesPlus();
+            
+            //TODO HACK: We don't want to read the header and bracket but sometimes we only need to skip over the bracket, so this solves the issue
+            //This will also skip over comments
+            string line = _reader.ReadLine().Trim();
+            while (line != "{")
+            {
+                line = _reader.ReadLine().Trim();
+            }
+            line = _reader.ReadLine().Trim();
+            
+            while (line != "}")
+            {
+                if (line.StartsWith("//") || string.IsNullOrEmpty(line))
+                {
+                    line = _reader.ReadLine().Trim();
+                    continue;
+                }
+                
+                verticesPlus.AddProperty(new VProperty(line));
+                line = _reader.ReadLine().Trim();
+            }
+
+            return verticesPlus;
         }
         
         private Displacement ReadDisplacement()
@@ -485,7 +556,7 @@ namespace VMFLib.Parsers
                             normalData += $"{line}\n";
                         }
 
-                        displacement.Rows.ParseNormals(normalData);
+                        displacement.Rows.ParseDistances(normalData);
                     } break;
                     case "normals":
                     {
@@ -501,7 +572,14 @@ namespace VMFLib.Parsers
                     } break;
                     default:
                     {
-                        displacement.AddProperty(new VProperty(line));
+                        if (line.Trim().StartsWith("\""))
+                        {
+                            displacement.AddProperty(new VProperty(line));
+                        }
+                        else // Probably a class
+                        {
+                            displacement.SubClasses.Add(ReadGenericClass(line)); //TODO: It'd probably be better if we used ReadClass() instead?
+                        }
                     } break;
                 }
 
@@ -546,6 +624,17 @@ namespace VMFLib.Parsers
                     {
                         hidden.Class = ReadSolid();
                     } break;
+                    default:
+                    {
+                        if (line.Trim().StartsWith("\""))
+                        {
+                            hidden.AddProperty(new VProperty(line));
+                        }
+                        else // Probably a class
+                        {
+                            hidden.SubClasses.Add(ReadGenericClass(line)); //TODO: It'd probably be better if we used ReadClass() instead?
+                        }
+                    } break;
                 }
                 
                 line = _reader.ReadLine().Trim();
@@ -579,13 +668,7 @@ namespace VMFLib.Parsers
                     continue;
                 }
 
-                switch (line.Trim())
-                {
-                    default:
-                    {
-                        group.AddProperty(new VProperty(line));
-                    } break;
-                }
+                group.AddProperty(new VProperty(line));
                 
                 line = _reader.ReadLine().Trim();
             }
@@ -640,7 +723,14 @@ namespace VMFLib.Parsers
                     } break;
                     default:
                     {
-                        entity.AddProperty(new VProperty(line));
+                        if (line.Trim().StartsWith("\""))
+                        {
+                            entity.AddProperty(new VProperty(line));
+                        }
+                        else // Probably a class
+                        {
+                            entity.SubClasses.Add(ReadGenericClass(line)); //TODO: It'd probably be better if we used ReadClass() instead?
+                        }
                     } break;
                 }
                 
@@ -676,6 +766,45 @@ namespace VMFLib.Parsers
             }
 
             return connections;
+        }
+
+        #endregion
+
+        #region Generic classes
+
+        public GenericVClass ReadGenericClass(string header)
+        {
+            GenericVClass genericClass = new GenericVClass(header);
+
+            //TODO HACK: We don't want to read the header and bracket but sometimes we only need to skip over the bracket, so this solves the issue
+            //This will also skip over comments
+            string line = _reader.ReadLine().Trim();
+            while (line != "{")
+            {
+                line = _reader.ReadLine().Trim();
+            }
+            line = _reader.ReadLine().Trim();
+            
+            while (line != "}")
+            {
+                if (line.StartsWith("//") || string.IsNullOrEmpty(line))
+                {
+                    line = _reader.ReadLine().Trim();
+                    continue;
+                }
+
+                if (line.Trim().StartsWith("\""))
+                {
+                    genericClass.AddProperty(new VProperty(line));
+                }
+                else // Probably a class
+                {
+                    genericClass.SubClasses.Add(ReadGenericClass(line)); //TODO: It'd probably be better if we used ReadClass() instead?
+                }
+                line = _reader.ReadLine().Trim();
+            }
+
+            return genericClass;
         }
 
         #endregion

@@ -16,6 +16,11 @@ public class Entity : BaseVClass
     public string ClassName => Properties["classname"].Str();
     public int SpawnFlags => Properties["spawnflags"].Int();
     public Vertex Origin => Properties["origin"].Vertex();
+
+    public override string ToString()
+    {
+        return ClassName ?? base.ToString();
+    }
 }
 
 public class Connection
@@ -34,7 +39,7 @@ public class Connection
         var properties = conSplit[1].Trim('"').Split(',');
         TargetName = properties[0];
         InputName = properties[1];
-        Value = string.IsNullOrEmpty(properties[2]) ? null : new VProperty(properties[2]); //May not have property
+        Value = string.IsNullOrEmpty(properties[2]) ? null : new VProperty(null, properties[2]); //May not have property
         Delay = double.Parse(properties[3]);
         Refires = int.Parse(properties[4]);
     }

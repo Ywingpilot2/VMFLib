@@ -48,6 +48,7 @@
         <Compile Include="VClass\CameraInfo.cs" />
         <Compile Include="VClass\EditorInfo.cs" />
         <Compile Include="VClass\Entity.cs" />
+        <Compile Include="VClass\Hpp.cs" />
         <Compile Include="VClass\VisGroups.cs" />
         <Compile Include="VClass\VProperty.cs" />
         <Compile Include="VClass\WorldInfo.cs" />
