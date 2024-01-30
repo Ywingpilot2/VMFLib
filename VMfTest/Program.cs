@@ -57,7 +57,7 @@ namespace VMfTest
                     {
                         foreach (BaseVClass vClass in VClasses)
                         {
-                            Console.WriteLine(vClass.ToString());
+                            Console.WriteLine($"-{vClass.ToString()}");
                         }
                     } break;
                 }
