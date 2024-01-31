@@ -96,6 +96,12 @@ namespace VMfTest
                 } break;
                 case "printall":
                 {
+                    if (VClasses.Count == 0)
+                    {
+                        Console.WriteLine("There are no currently loaded classes. Consider using the 'readadd' command to load them from a file.");
+                        break;
+                    }
+                    
                     for (var idx = 0; idx < VClasses.Count; idx++)
                     {
                         BaseVClass vClass = VClasses[idx];
