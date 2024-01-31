@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using VMFLib.Parsers;
 using VMFLib.VClass;
@@ -45,6 +46,10 @@ namespace VMfTest
             {
                 case "read":
                 {
+                    if (!File.Exists(param))
+                    {
+                        Console.WriteLine($"Specified file does not exist: {param}");
+                    }
                     VClassReader classReader = new VClassReader(param);
                     Stopwatch stopwatch = new Stopwatch();
                     stopwatch.Start();
@@ -62,6 +67,10 @@ namespace VMfTest
                 } break;
                 case "readadd":
                 {
+                    if (!File.Exists(param))
+                    {
+                        Console.WriteLine($"Specified file does not exist: {param}");
+                    }
                     VClassReader classReader = new VClassReader(param);
                     Stopwatch stopwatch = new Stopwatch();
                     stopwatch.Start();
