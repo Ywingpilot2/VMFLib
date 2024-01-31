@@ -7,23 +7,17 @@ namespace VMFLib.Parsers
 {
     public class VClassReader : IDisposable
     {
-        private StreamReader _reader;
+        private protected StreamReader Reader;
 
         public VClassReader(string VmfPath)
         {
-            _reader = new StreamReader(VmfPath);
-            
-        }
-
-        public virtual void Dispose()
-        {
-            _reader.Dispose();
+            Reader = new StreamReader(VmfPath);
         }
 
         public virtual BaseVClass ReadClass()
         {
             //TODO: Parse comments correctly
-            string line = _reader.ReadLine();
+            string line = Reader.ReadLine();
             while (line != null)
             {
                 switch (line.Trim())
@@ -58,7 +52,7 @@ namespace VMFLib.Parsers
                         //Blank space; skip over
                         if (string.IsNullOrEmpty(line) || string.IsNullOrWhiteSpace(line) || line.Trim().StartsWith("//"))
                         {
-                            line = _reader.ReadLine();
+                            line = Reader.ReadLine();
                         }
                         else //probably a class we don't natively support, use the generic class reader
                         {
@@ -80,23 +74,23 @@ namespace VMFLib.Parsers
             
             //TODO HACK: We don't want to read the header and bracket but sometimes we only need to skip over the bracket, so this solves the issue
             //This will also skip over comments
-            string line = _reader.ReadLine();
+            string line = Reader.ReadLine();
             while (line != "{")
             {
-                line = _reader.ReadLine();
+                line = Reader.ReadLine();
             }
-            line = _reader.ReadLine();
+            line = Reader.ReadLine();
             
             while (line != "}")
             {
                 if (line.StartsWith("//") || string.IsNullOrEmpty(line))
                 {
-                    line = _reader.ReadLine();
+                    line = Reader.ReadLine();
                     continue;
                 }
                 
                 versionInfo.AddProperty(new VProperty(line));
-                line = _reader.ReadLine();
+                line = Reader.ReadLine();
             }
 
             return versionInfo;
@@ -108,23 +102,23 @@ namespace VMFLib.Parsers
             
             //TODO HACK: We don't want to read the header and bracket but sometimes we only need to skip over the bracket, so this solves the issue
             //This will also skip over comments
-            string line = _reader.ReadLine();
+            string line = Reader.ReadLine();
             while (line != "{")
             {
-                line = _reader.ReadLine();
+                line = Reader.ReadLine();
             }
-            line = _reader.ReadLine();
+            line = Reader.ReadLine();
             
             while (line != "}")
             {
                 if (line.StartsWith("//") || string.IsNullOrEmpty(line))
                 {
-                    line = _reader.ReadLine();
+                    line = Reader.ReadLine();
                     continue;
                 }
                 
                 viewSettings.AddProperty(new VProperty(line));
-                line = _reader.ReadLine();
+                line = Reader.ReadLine();
             }
 
             return viewSettings;
@@ -136,18 +130,18 @@ namespace VMFLib.Parsers
             
             //TODO HACK: We don't want to read the header and bracket but sometimes we only need to skip over the bracket, so this solves the issue
             //This will also skip over comments
-            string line = _reader.ReadLine();
+            string line = Reader.ReadLine();
             while (line != "{")
             {
-                line = _reader.ReadLine();
+                line = Reader.ReadLine();
             }
-            line = _reader.ReadLine();
+            line = Reader.ReadLine();
             
             while (line != "}")
             {
                 if (line.StartsWith("//") || string.IsNullOrEmpty(line))
                 {
-                    line = _reader.ReadLine();
+                    line = Reader.ReadLine();
                     continue;
                 }
 
@@ -170,7 +164,7 @@ namespace VMFLib.Parsers
                     } break;
                 }
                 
-                line = _reader.ReadLine();
+                line = Reader.ReadLine();
             }
 
             return cameras;
@@ -182,23 +176,23 @@ namespace VMFLib.Parsers
             
             //TODO HACK: We don't want to read the header and bracket but sometimes we only need to skip over the bracket, so this solves the issue
             //This will also skip over comments
-            string line = _reader.ReadLine().Trim();
+            string line = Reader.ReadLine().Trim();
             while (line != "{")
             {
-                line = _reader.ReadLine().Trim();
+                line = Reader.ReadLine().Trim();
             }
-            line = _reader.ReadLine().Trim();
+            line = Reader.ReadLine().Trim();
             
             while (line != "}")
             {
                 if (line.StartsWith("//") || string.IsNullOrEmpty(line))
                 {
-                    line = _reader.ReadLine().Trim();
+                    line = Reader.ReadLine().Trim();
                     continue;
                 }
                 
                 camera.AddProperty(new VProperty(line));
-                line = _reader.ReadLine().Trim();
+                line = Reader.ReadLine().Trim();
             }
 
             return camera;
@@ -210,23 +204,23 @@ namespace VMFLib.Parsers
             
             //TODO HACK: We don't want to read the header and bracket but sometimes we only need to skip over the bracket, so this solves the issue
             //This will also skip over comments
-            string line = _reader.ReadLine().Trim();
+            string line = Reader.ReadLine().Trim();
             while (line != "{")
             {
-                line = _reader.ReadLine().Trim();
+                line = Reader.ReadLine().Trim();
             }
-            line = _reader.ReadLine().Trim();
+            line = Reader.ReadLine().Trim();
             
             while (line != "}")
             {
                 if (line.StartsWith("//") || string.IsNullOrEmpty(line))
                 {
-                    line = _reader.ReadLine().Trim();
+                    line = Reader.ReadLine().Trim();
                     continue;
                 }
                 
                 editor.AddProperty(new VProperty(line));
-                line = _reader.ReadLine().Trim();
+                line = Reader.ReadLine().Trim();
             }
 
             return editor;
@@ -242,24 +236,24 @@ namespace VMFLib.Parsers
             
             //TODO HACK: We don't want to read the header and bracket but sometimes we only need to skip over the bracket, so this solves the issue
             //This will also skip over comments
-            string line = _reader.ReadLine();
+            string line = Reader.ReadLine();
             while (line != "{")
             {
-                line = _reader.ReadLine();
+                line = Reader.ReadLine();
             }
-            line = _reader.ReadLine();
+            line = Reader.ReadLine();
             
             while (line != "}")
             {
                 if (line.StartsWith("//") || string.IsNullOrEmpty(line))
                 {
-                    line = _reader.ReadLine();
+                    line = Reader.ReadLine();
                     continue;
                 }
                 
                 visGroups.SubClasses.Add(ReadVisGroup());
                 
-                line = _reader.ReadLine();
+                line = Reader.ReadLine();
             }
 
             return visGroups;
@@ -268,14 +262,14 @@ namespace VMFLib.Parsers
         private VisGroup ReadVisGroup()
         {
             VisGroup visGroup = new VisGroup();
-            _reader.ReadLine(); // {
-            string line = _reader.ReadLine().Trim();
+            Reader.ReadLine(); // {
+            string line = Reader.ReadLine().Trim();
             
             while (line != "}")
             {
                 if (line.StartsWith("//") || string.IsNullOrEmpty(line))
                 {
-                    line = _reader.ReadLine().Trim();
+                    line = Reader.ReadLine().Trim();
                     continue;
                 }
 
@@ -289,7 +283,7 @@ namespace VMFLib.Parsers
                     visGroup.AddProperty(new VProperty(line));
                 }
 
-                line = _reader.ReadLine().Trim();
+                line = Reader.ReadLine().Trim();
             }
 
             return visGroup;
@@ -305,18 +299,18 @@ namespace VMFLib.Parsers
             
             //TODO HACK: We don't want to read the header and bracket but sometimes we only need to skip over the bracket, so this solves the issue
             //This will also skip over comments
-            string line = _reader.ReadLine();
+            string line = Reader.ReadLine();
             while (line != "{")
             {
-                line = _reader.ReadLine();
+                line = Reader.ReadLine();
             }
-            line = _reader.ReadLine();
+            line = Reader.ReadLine();
             
             while (line != "}")
             {
                 if (line.StartsWith("//") || string.IsNullOrEmpty(line))
                 {
-                    line = _reader.ReadLine();
+                    line = Reader.ReadLine();
                     continue;
                 }
 
@@ -347,7 +341,7 @@ namespace VMFLib.Parsers
                     } break;
                 }
                 
-                line = _reader.ReadLine();
+                line = Reader.ReadLine();
             }
 
             return world;
@@ -358,14 +352,14 @@ namespace VMFLib.Parsers
         private Solid ReadSolid()
         {
             Solid solid = new Solid();
-            _reader.ReadLine(); // {
-            string line = _reader.ReadLine().Trim();
+            Reader.ReadLine(); // {
+            string line = Reader.ReadLine().Trim();
             
             while (line != "}")
             {
                 if (line.StartsWith("//") || string.IsNullOrEmpty(line))
                 {
-                    line = _reader.ReadLine().Trim();
+                    line = Reader.ReadLine().Trim();
                     continue;
                 }
 
@@ -392,7 +386,7 @@ namespace VMFLib.Parsers
                     } break;
                 }
 
-                line = _reader.ReadLine().Trim();
+                line = Reader.ReadLine().Trim();
             }
 
             return solid;
@@ -401,14 +395,14 @@ namespace VMFLib.Parsers
         private Side ReadSide()
         {
             Side side = new Side();
-            _reader.ReadLine(); // {
-            string line = _reader.ReadLine().Trim();
+            Reader.ReadLine(); // {
+            string line = Reader.ReadLine().Trim();
             
             while (line != "}")
             {
                 if (line.StartsWith("//") || string.IsNullOrEmpty(line))
                 {
-                    line = _reader.ReadLine().Trim();
+                    line = Reader.ReadLine().Trim();
                     continue;
                 }
 
@@ -436,7 +430,7 @@ namespace VMFLib.Parsers
                     } break;
                 }
 
-                line = _reader.ReadLine().Trim();
+                line = Reader.ReadLine().Trim();
             }
 
             return side;
@@ -448,23 +442,23 @@ namespace VMFLib.Parsers
             
             //TODO HACK: We don't want to read the header and bracket but sometimes we only need to skip over the bracket, so this solves the issue
             //This will also skip over comments
-            string line = _reader.ReadLine().Trim();
+            string line = Reader.ReadLine().Trim();
             while (line != "{")
             {
-                line = _reader.ReadLine().Trim();
+                line = Reader.ReadLine().Trim();
             }
-            line = _reader.ReadLine().Trim();
+            line = Reader.ReadLine().Trim();
             
             while (line != "}")
             {
                 if (line.StartsWith("//") || string.IsNullOrEmpty(line))
                 {
-                    line = _reader.ReadLine().Trim();
+                    line = Reader.ReadLine().Trim();
                     continue;
                 }
                 
                 verticesPlus.AddProperty(new VProperty(line));
-                line = _reader.ReadLine().Trim();
+                line = Reader.ReadLine().Trim();
             }
 
             return verticesPlus;
@@ -473,14 +467,14 @@ namespace VMFLib.Parsers
         private Displacement ReadDisplacement()
         {
             Displacement displacement = new Displacement();
-            _reader.ReadLine(); // {
-            string line = _reader.ReadLine().Trim();
+            Reader.ReadLine(); // {
+            string line = Reader.ReadLine().Trim();
             
             while (line != "}")
             {
                 if (line.StartsWith("//") || string.IsNullOrEmpty(line))
                 {
-                    line = _reader.ReadLine().Trim();
+                    line = Reader.ReadLine().Trim();
                     continue;
                 }
 
@@ -488,91 +482,91 @@ namespace VMFLib.Parsers
                 {
                     case "allowed_verts":
                     {
-                        _reader.ReadLine(); // {
-                        line = _reader.ReadLine().Trim();
+                        Reader.ReadLine(); // {
+                        line = Reader.ReadLine().Trim();
                         string normalData = "";
                         while (line != "}")
                         {
                             normalData += $"{line}\n";
-                            line = _reader.ReadLine().Trim();
+                            line = Reader.ReadLine().Trim();
                         }
 
                         displacement.Rows.ParseAllowedVerts(normalData);
                     } break;
                     case "triangle_tags":
                     {
-                        _reader.ReadLine(); // {
-                        line = _reader.ReadLine().Trim();
+                        Reader.ReadLine(); // {
+                        line = Reader.ReadLine().Trim();
                         string normalData = "";
                         while (line != "}")
                         {
                             normalData += $"{line}\n";
-                            line = _reader.ReadLine().Trim();
+                            line = Reader.ReadLine().Trim();
                         }
 
                         displacement.Rows.ParseTriangleTag(normalData);
                     } break;
                     case "alphas":
                     {
-                        _reader.ReadLine(); // {
-                        line = _reader.ReadLine().Trim();
+                        Reader.ReadLine(); // {
+                        line = Reader.ReadLine().Trim();
                         string normalData = "";
                         while (line != "}")
                         {
                             normalData += $"{line}\n";
-                            line = _reader.ReadLine().Trim();
+                            line = Reader.ReadLine().Trim();
                         }
 
                         displacement.Rows.ParseAlpha(normalData);
                     } break;
                     case "offset_normals":
                     {
-                        _reader.ReadLine(); // {
-                        line = _reader.ReadLine().Trim();
+                        Reader.ReadLine(); // {
+                        line = Reader.ReadLine().Trim();
                         string normalData = "";
                         while (line != "}")
                         {
                             normalData += $"{line}\n";
-                            line = _reader.ReadLine().Trim();
+                            line = Reader.ReadLine().Trim();
                         }
 
                         displacement.Rows.ParseOffsetNormals(normalData);
                     } break;
                     case "offsets":
                     {
-                        _reader.ReadLine(); // {
-                        line = _reader.ReadLine().Trim();
+                        Reader.ReadLine(); // {
+                        line = Reader.ReadLine().Trim();
                         string normalData = "";
                         while (line != "}")
                         {
                             normalData += $"{line}\n";
-                            line = _reader.ReadLine().Trim();
+                            line = Reader.ReadLine().Trim();
                         }
 
                         displacement.Rows.ParseOffsets(normalData);
                     } break;
                     case "distances":
                     {
-                        _reader.ReadLine(); // {
-                        line = _reader.ReadLine().Trim();
+                        Reader.ReadLine(); // {
+                        line = Reader.ReadLine().Trim();
                         string normalData = "";
                         while (line != "}")
                         {
                             normalData += $"{line}\n";
-                            line = _reader.ReadLine().Trim();
+                            line = Reader.ReadLine().Trim();
                         }
 
                         displacement.Rows.ParseDistances(normalData);
                     } break;
                     case "normals":
                     {
-                        _reader.ReadLine(); // {
-                        line = _reader.ReadLine().Trim();
+                        Reader.ReadLine(); // {
+                        line = Reader.ReadLine().Trim();
                         string normalData = "";
                         while (line != "}")
                         {
                             normalData += $"{line}\n";
-                            line = _reader.ReadLine().Trim();
+                            line = Reader.ReadLine().Trim();
                         }
 
                         displacement.Rows.ParseNormals(normalData);
@@ -590,7 +584,7 @@ namespace VMFLib.Parsers
                     } break;
                 }
 
-                line = _reader.ReadLine().Trim();
+                line = Reader.ReadLine().Trim();
             }
 
             return displacement;
@@ -606,18 +600,18 @@ namespace VMFLib.Parsers
             
             //TODO HACK: We don't want to read the header and bracket but sometimes we only need to skip over the bracket, so this solves the issue
             //This will also skip over comments
-            string line = _reader.ReadLine().Trim();
+            string line = Reader.ReadLine().Trim();
             while (line != "{")
             {
-                line = _reader.ReadLine().Trim();
+                line = Reader.ReadLine().Trim();
             }
-            line = _reader.ReadLine().Trim();
+            line = Reader.ReadLine().Trim();
             
             while (line != "}")
             {
                 if (line.StartsWith("//") || string.IsNullOrEmpty(line))
                 {
-                    line = _reader.ReadLine().Trim();
+                    line = Reader.ReadLine().Trim();
                     continue;
                 }
 
@@ -644,7 +638,7 @@ namespace VMFLib.Parsers
                     } break;
                 }
                 
-                line = _reader.ReadLine().Trim();
+                line = Reader.ReadLine().Trim();
             }
 
             return hidden;
@@ -660,18 +654,18 @@ namespace VMFLib.Parsers
             
             //TODO HACK: We don't want to read the header and bracket but sometimes we only need to skip over the bracket, so this solves the issue
             //This will also skip over comments
-            string line = _reader.ReadLine().Trim();
+            string line = Reader.ReadLine().Trim();
             while (line != "{")
             {
-                line = _reader.ReadLine().Trim();
+                line = Reader.ReadLine().Trim();
             }
-            line = _reader.ReadLine().Trim();
+            line = Reader.ReadLine().Trim();
             
             while (line != "}")
             {
                 if (line.StartsWith("//") || string.IsNullOrEmpty(line))
                 {
-                    line = _reader.ReadLine().Trim();
+                    line = Reader.ReadLine().Trim();
                     continue;
                 }
                 
@@ -694,7 +688,7 @@ namespace VMFLib.Parsers
                     } break;
                 }
 
-                line = _reader.ReadLine().Trim();
+                line = Reader.ReadLine().Trim();
             }
 
             return group;
@@ -712,18 +706,18 @@ namespace VMFLib.Parsers
             
             //TODO HACK: We don't want to read the header and bracket but sometimes we only need to skip over the bracket, so this solves the issue
             //This will also skip over comments
-            string line = _reader.ReadLine().Trim();
+            string line = Reader.ReadLine().Trim();
             while (line != "{")
             {
-                line = _reader.ReadLine().Trim();
+                line = Reader.ReadLine().Trim();
             }
-            line = _reader.ReadLine();
+            line = Reader.ReadLine();
             
             while (line != "}")
             {
                 if (line.StartsWith("//") || string.IsNullOrEmpty(line))
                 {
-                    line = _reader.ReadLine();
+                    line = Reader.ReadLine();
                     continue;
                 }
 
@@ -758,7 +752,7 @@ namespace VMFLib.Parsers
                     } break;
                 }
                 
-                line = _reader.ReadLine();
+                line = Reader.ReadLine();
             }
 
             return entity;
@@ -770,23 +764,23 @@ namespace VMFLib.Parsers
             
             //TODO HACK: We don't want to read the header and bracket but sometimes we only need to skip over the bracket, so this solves the issue
             //This will also skip over comments
-            string line = _reader.ReadLine().Trim();
+            string line = Reader.ReadLine().Trim();
             while (line != "{")
             {
-                line = _reader.ReadLine().Trim();
+                line = Reader.ReadLine().Trim();
             }
-            line = _reader.ReadLine().Trim(); //{
+            line = Reader.ReadLine().Trim(); //{
             
             while (line != "}")
             {
                 if (line.StartsWith("//") || string.IsNullOrEmpty(line))
                 {
-                    line = _reader.ReadLine().Trim();
+                    line = Reader.ReadLine().Trim();
                     continue;
                 }
                 
                 connections.Add(new Connection(line));
-                line = _reader.ReadLine().Trim();
+                line = Reader.ReadLine().Trim();
             }
 
             return connections;
@@ -802,18 +796,18 @@ namespace VMFLib.Parsers
 
             //TODO HACK: We don't want to read the header and bracket but sometimes we only need to skip over the bracket, so this solves the issue
             //This will also skip over comments
-            string line = _reader.ReadLine().Trim();
+            string line = Reader.ReadLine().Trim();
             while (line != "{")
             {
-                line = _reader.ReadLine().Trim();
+                line = Reader.ReadLine().Trim();
             }
-            line = _reader.ReadLine().Trim();
+            line = Reader.ReadLine().Trim();
             
             while (line != "}")
             {
                 if (line.StartsWith("//") || string.IsNullOrEmpty(line))
                 {
-                    line = _reader.ReadLine().Trim();
+                    line = Reader.ReadLine().Trim();
                     continue;
                 }
 
@@ -825,12 +819,18 @@ namespace VMFLib.Parsers
                 {
                     genericClass.SubClasses.Add(ReadGenericClass(line)); //TODO: It'd probably be better if we used ReadClass() instead?
                 }
-                line = _reader.ReadLine().Trim();
+                line = Reader.ReadLine().Trim();
             }
 
             return genericClass;
         }
 
         #endregion
+        
+        public virtual void Dispose()
+        {
+            Reader.Close();
+            Reader.Dispose();
+        }
     }
 }

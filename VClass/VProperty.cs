@@ -31,26 +31,42 @@ namespace VMFLib.VClass
 
         public int Int()
         {
+            //Don't return null values; return defaults instead
+            if (_property == null)
+                return 0;
             return int.Parse(_property);
         }
         
         public float Float()
         {
+            //Don't return null values; return defaults instead
+            if (_property == null)
+                return 0.0f;
             return float.Parse(_property);
         }
         
         public double Dec()
         {
+            //Don't return null values; return defaults instead
+            if (_property == null)
+                return 0.0;
             return double.Parse(_property);
         }
         
         public string Str()
         {
+            //Don't return null values; return defaults instead
+            if (_property == null)
+                return "";
             return _property;
         }
         
         public bool Bool()
         {
+            //Don't return null values; return defaults instead
+            if (_property == null)
+                return false;
+            
             bool value;
             if (bool.TryParse(_property, out value))
             {
@@ -109,6 +125,10 @@ namespace VMFLib.VClass
             return true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>The name of this property, otherwise the type's name</returns>
         public override string ToString()
         {
             return Name ?? base.ToString();

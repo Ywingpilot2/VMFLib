@@ -17,4 +17,8 @@ public class Vec2
         X = x;
         Y = y;
     }
+
+    public Vec2()
+    {
+    }
 }

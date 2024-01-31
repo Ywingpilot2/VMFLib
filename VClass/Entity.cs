@@ -17,8 +17,14 @@ public class Entity : BaseVClass
     public int SpawnFlags => Properties["spawnflags"].Int();
     public Vertex Origin => Properties["origin"].Vertex();
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns>Target name if it has one, otherwise class name</returns>
     public override string ToString()
     {
+        if (Properties.ContainsKey("targetname"))
+            return Properties["targetname"].Str();
         return ClassName ?? base.ToString();
     }
 }

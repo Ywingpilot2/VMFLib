@@ -43,6 +43,7 @@
         <Compile Include="Objects\vec2.cs" />
         <Compile Include="Objects\vec3.cs" />
         <Compile Include="Parsers\VClassReader.cs" />
+        <Compile Include="Parsers\VClassWriter.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="VClass\BaseVClass.cs" />
         <Compile Include="VClass\CameraInfo.cs" />
