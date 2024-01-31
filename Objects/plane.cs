@@ -51,9 +51,9 @@ public class DispRows
     public Dictionary<int, List<Vertex>> RowNormals = new Dictionary<int, List<Vertex>>();
     public Dictionary<int, List<Vertex>> RowOffsetNormals = new Dictionary<int, List<Vertex>>();
     
-    public Dictionary<int, List<decimal>> RowDistances = new Dictionary<int, List<decimal>>();
+    public Dictionary<int, List<double>> RowDistances = new Dictionary<int, List<double>>();
     public Dictionary<int, List<Vertex>> RowOffsets = new Dictionary<int, List<Vertex>>();
-    public Dictionary<int, List<decimal>> RowAlphas = new Dictionary<int, List<decimal>>();
+    public Dictionary<int, List<double>> RowAlphas = new Dictionary<int, List<double>>();
     public Dictionary<int, List<int>> RowTriangleTags = new Dictionary<int, List<int>>();
     
     public Dictionary<int, List<int>> AllowedVerts = new Dictionary<int, List<int>>();
@@ -132,10 +132,10 @@ public class DispRows
             currentDist = currentDist.Trim('"');
 
             //TODO: This is an awful way to do this!
-            List<decimal> distanceRows = new List<decimal>();
+            List<double> distanceRows = new List<double>();
             foreach (string dist in currentDist.Split(' '))
             {
-                distanceRows.Add(decimal.Parse(dist));
+                distanceRows.Add(double.Parse(dist));
             }
 
             RowDistances.Add(row, distanceRows);
@@ -177,10 +177,10 @@ public class DispRows
             currentAlpha = currentAlpha.Trim('"');
             
             //TODO: This is an awful way to do this!
-            List<decimal> alphaRows = new List<decimal>();
+            List<double> alphaRows = new List<double>();
             foreach (string dist in currentAlpha.Split(' '))
             {
-                alphaRows.Add(decimal.Parse(dist));
+                alphaRows.Add(double.Parse(dist));
             }
             
             RowAlphas.Add(row, alphaRows);

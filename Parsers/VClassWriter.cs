@@ -13,10 +13,6 @@ public class VClassWriter : IDisposable
 
     public VClassWriter(string filePath)
     {
-        if (!File.Exists(filePath))
-        {
-            throw new FileNotFoundException();
-        }
         Writer = new StreamWriter(filePath);
     }
 
@@ -196,13 +192,117 @@ public class VClassWriter : IDisposable
 
         if (displacement.Rows != null)
         {
-            WriteRows(displacement.Rows.RowNormals, "normals");
-            WriteRows(displacement.Rows.RowDistances, "distances");
-            WriteRows(displacement.Rows.RowOffsets, "offsets");
-            WriteRows(displacement.Rows.RowOffsetNormals, "offset_normals");
-            WriteRows(displacement.Rows.RowAlphas, "alpha");
-            WriteRows(displacement.Rows.RowTriangleTags, "triangle_tags");
-            WriteRows(displacement.Rows.AllowedVerts, "allowed_verts");
+            WriteIndentedLine("normals");
+            WriteIndentedLine("{");
+            NextLevel();
+            for (int i = 0; i < displacement.Rows.RowNormals.Count; i++)
+            {
+                var currentRow = displacement.Rows.RowNormals[i];
+                string write = "";
+                foreach (Vertex vertex in currentRow)
+                {
+                    write += $"{vertex} ";
+                }
+                WriteRow(i, write.Trim());
+            }
+            PreviousLevel();
+            WriteIndentedLine("}");
+            
+            WriteIndentedLine("distances");
+            WriteIndentedLine("{");
+            NextLevel();
+            for (int i = 0; i < displacement.Rows.RowDistances.Count; i++)
+            {
+                var currentRow = displacement.Rows.RowDistances[i];
+                string write = "";
+                foreach (double distance in currentRow)
+                {
+                    write += $"{distance} ";
+                }
+                WriteRow(i, write.Trim());
+            }
+            PreviousLevel();
+            WriteIndentedLine("}");
+            
+            WriteIndentedLine("offsets");
+            WriteIndentedLine("{");
+            NextLevel();
+            for (int i = 0; i < displacement.Rows.RowOffsets.Count; i++)
+            {
+                var currentRow = displacement.Rows.RowOffsets[i];
+                string write = "";
+                foreach (Vertex vertex in currentRow)
+                {
+                    write += $"{vertex} ";
+                }
+                WriteRow(i, write.Trim());
+            }
+            PreviousLevel();
+            WriteIndentedLine("}");
+            
+            WriteIndentedLine("offset_normals");
+            WriteIndentedLine("{");
+            NextLevel();
+            for (int i = 0; i < displacement.Rows.RowOffsetNormals.Count; i++)
+            {
+                var currentRow = displacement.Rows.RowOffsetNormals[i];
+                string write = "";
+                foreach (Vertex vertex in currentRow)
+                {
+                    write += $"{vertex} ";
+                }
+                WriteRow(i, write.Trim());
+            }
+            PreviousLevel();
+            WriteIndentedLine("}");
+            
+            WriteIndentedLine("alpha");
+            WriteIndentedLine("{");
+            NextLevel();
+            for (int i = 0; i < displacement.Rows.RowAlphas.Count; i++)
+            {
+                var currentRow = displacement.Rows.RowAlphas[i];
+                string write = "";
+                foreach (double distance in currentRow)
+                {
+                    write += $"{distance} ";
+                }
+                WriteRow(i, write.Trim());
+            }
+            PreviousLevel();
+            WriteIndentedLine("}");
+            
+            WriteIndentedLine("triangle_tags");
+            WriteIndentedLine("{");
+            NextLevel();
+            for (int i = 0; i < displacement.Rows.RowTriangleTags.Count; i++)
+            {
+                var currentRow = displacement.Rows.RowTriangleTags[i];
+                string write = "";
+                foreach (int distance in currentRow)
+                {
+                    write += $"{distance} ";
+                }
+                WriteRow(i, write.Trim());
+            }
+            PreviousLevel();
+            WriteIndentedLine("}");
+            
+            WriteIndentedLine("allowed_verts");
+            WriteIndentedLine("{");
+            NextLevel();
+            for (int i = 0; i < displacement.Rows.AllowedVerts.Count; i++)
+            {
+                var currentRow = displacement.Rows.AllowedVerts[i];
+                string write = "";
+                foreach (int distance in currentRow)
+                {
+                    write += $"{distance} ";
+                }
+                WriteRow(i, write.Trim());
+            }
+            PreviousLevel();
+            WriteIndentedLine("}");
         }
 
         foreach (BaseVClass subClass in displacement.SubClasses)
@@ -210,21 +310,6 @@ public class VClassWriter : IDisposable
             WriteClass(subClass); //Pass this back to WriteClass() in case this is a special class
         }
         
-        PreviousLevel();
-        WriteIndentedLine("}");
-    }
-
-    private protected void WriteRows(object rowsobj, string header)
-    {
-        Dictionary<int, object> rows = (Dictionary<int, object>)rowsobj;
-        WriteIndentedLine(header);
-        WriteIndentedLine("{");
-        NextLevel();
-        for (int i = 0; i < rows.Count; i++)
-        {
-            var currentRow = rows[0];
-            WriteRow(i, currentRow.ToString());
-        }
         PreviousLevel();
         WriteIndentedLine("}");
     }
