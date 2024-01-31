@@ -300,7 +300,7 @@ public class VClassWriter : IDisposable
                 {
                     write += $"{distance} ";
                 }
-                WriteRow(i, write.Trim());
+                WriteIndentedLine($"\"row{displacement.Rows.AllowedVerts.Keys.ElementAt(i)}\" \"{write}\"");
             }
             PreviousLevel();
             WriteIndentedLine("}");
