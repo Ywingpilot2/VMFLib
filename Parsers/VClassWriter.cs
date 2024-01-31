@@ -13,7 +13,16 @@ public class VClassWriter : IDisposable
 
     public VClassWriter(string filePath)
     {
+        if (!File.Exists(filePath))
+        {
+            throw new FileNotFoundException();
+        }
         Writer = new StreamWriter(filePath);
+    }
+
+    public VClassWriter(StreamWriter writer)
+    {
+        Writer = writer;
     }
 
     public virtual void WriteClass(BaseVClass vClass)

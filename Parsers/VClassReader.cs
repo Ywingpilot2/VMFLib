@@ -19,6 +19,11 @@ namespace VMFLib.Parsers
             Reader = new StreamReader(VmfPath);
         }
 
+        public VClassReader(StreamReader streamReader)
+        {
+            Reader = streamReader;
+        }
+
         public virtual BaseVClass ReadClass()
         {
             //TODO: Parse comments correctly
