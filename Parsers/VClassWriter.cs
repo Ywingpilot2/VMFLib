@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using VMFLib.Objects;
 using VMFLib.VClass;
 
@@ -293,7 +294,7 @@ public class VClassWriter : IDisposable
             NextLevel();
             for (int i = 0; i < displacement.Rows.AllowedVerts.Count; i++)
             {
-                var currentRow = displacement.Rows.AllowedVerts[i];
+                var currentRow = displacement.Rows.AllowedVerts.Values.ElementAt(i);
                 string write = "";
                 foreach (int distance in currentRow)
                 {
