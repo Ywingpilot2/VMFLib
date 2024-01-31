@@ -36,19 +36,19 @@
     
     public class Vertex
     {
-        public int X;
-        public int Y;
-        public int Z;
+        public double X;
+        public double Y;
+        public double Z;
         
         public Vertex(string str)
         {
             var property = str.Trim('[', ']').Split(' ');
-            X = int.Parse(property[0]);
-            Y = int.Parse(property[1]);
-            Z = int.Parse(property[2]);
+            X = double.Parse(property[0]);
+            Y = double.Parse(property[1]);
+            Z = double.Parse(property[2]);
         }
 
-        public Vertex(int x, int y, int z)
+        public Vertex(double x, double y, double z)
         {
             X = x;
             Y = y;

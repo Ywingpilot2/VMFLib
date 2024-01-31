@@ -76,5 +76,4 @@ public class Displacement : BaseVClass
     {
         Rows = new DispRows();
     }
-    //TODO: allowed_verts
 }

@@ -26,7 +26,14 @@ namespace VMFLib.VClass
             
             var parsed = property.Split(new []{"\" \""}, StringSplitOptions.RemoveEmptyEntries);
             Name = parsed[0].Trim(new []{' ', '"'});
-            _property = parsed[1].Trim().Trim(new []{' ', '"'});
+            _property = parsed[1].Trim(new []{' ', '"'});
+        }
+
+        /// <summary>
+        /// Blank property; will usually just return defaults unless it is modified
+        /// </summary>
+        public VProperty()
+        {
         }
 
         public int Int()

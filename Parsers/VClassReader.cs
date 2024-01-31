@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using VMFLib.Objects;
 using VMFLib.VClass;
 
 namespace VMFLib.Parsers
@@ -318,15 +319,21 @@ namespace VMFLib.Parsers
                 {
                     case "group":
                     {
-                        world.Groups.Add(ReadGroup());
+                        Group group = ReadGroup();
+                        world.Groups.Add(group);
+                        world.SubClasses.Add(group);
                     } break;
                     case "hidden":
                     {
-                        world.HiddenClasses.Add(ReadHidden()); //TODO: Better implementation, Hidden should be its own class similar to group
+                        Hidden hidden = ReadHidden();
+                        world.HiddenClasses.Add(hidden);
+                        world.SubClasses.Add(hidden);
                     } break;
                     case "solid":
                     {
-                        world.Solids.Add(ReadSolid());
+                        Solid solid = ReadSolid();
+                        world.Solids.Add(solid);
+                        world.SubClasses.Add(solid);
                     } break;
                     default:
                     {
@@ -457,7 +464,7 @@ namespace VMFLib.Parsers
                     continue;
                 }
                 
-                verticesPlus.AddProperty(new VProperty(line));
+                verticesPlus.Vertices.Add(new Vertex(line.Split(new []{"\" \""}, StringSplitOptions.RemoveEmptyEntries)[1].Trim(new []{' ', '"'})));
                 line = Reader.ReadLine().Trim();
             }
 
@@ -725,11 +732,11 @@ namespace VMFLib.Parsers
                 {
                     case "editor":
                     {
-                        ReadEditor();
+                        entity.Editor = ReadEditor();
                     } break;
                     case "hidden":
                     {
-                        ReadHidden();
+                        entity.Hidden = ReadHidden();
                     } break;
                     case "connections":
                     {

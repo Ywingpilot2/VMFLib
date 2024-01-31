@@ -10,6 +10,7 @@ public class Entity : BaseVClass
     public override Dictionary<string, VProperty> Properties { get; set; }
     public List<Connection> Connections = new List<Connection>();
     public Solid Solid;
+    public Hidden Hidden;
     public Editor Editor;
 
     public int Id => Properties["id"].Int();
@@ -45,7 +46,7 @@ public class Connection
         var properties = conSplit[1].Trim('"').Split(',');
         TargetName = properties[0];
         InputName = properties[1];
-        Value = string.IsNullOrEmpty(properties[2]) ? null : new VProperty(null, properties[2]); //May not have property
+        Value = string.IsNullOrEmpty(properties[2]) ? new VProperty() : new VProperty(null, properties[2]); //May not have property
         Delay = double.Parse(properties[3]);
         Refires = int.Parse(properties[4]);
     }

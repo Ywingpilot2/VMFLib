@@ -20,13 +20,16 @@ public class Plane
             new Vertex(planeVerts[2]),
         };
     }
+
+    public override string ToString()
+    {
+        return $"{Vertices[0].ToSpecialString(1)} {Vertices[1].ToSpecialString(1)} {Vertices[2].ToSpecialString(1)} ";
+    }
 }
 
 public class UVAxis
 {
-    public double X;
-    public double Y;
-    public double Z;
+    public Vertex XYZ;
 
     public double Translation;
     public double Scaling;
@@ -34,25 +37,26 @@ public class UVAxis
     public UVAxis(string UVAxis)
     {
         var points = UVAxis.Replace("[", "").Replace("]", "").Split(' ');
-        X = double.Parse(points[0]);
-        Y = double.Parse(points[1]);
-        Z = double.Parse(points[2]);
-        Translation = double.Parse(points[3]);
-        Scaling = double.Parse(points[4]);
+        XYZ = new Vertex(double.Parse(points[0]), double.Parse(points[1]), double.Parse(points[2]));
+    }
+
+    public override string ToString()
+    {
+        return $"[{XYZ.ToString()} {Translation}] {Scaling}";
     }
 }
 
-//TODO: Implement proper format for normal parsing(instead of just holding strings)
 public class DispRows
 {
-    public Dictionary<int, List<string>> RowNormals = new Dictionary<int, List<string>>();
-    public Dictionary<int, List<string>> RowOffsetNormals = new Dictionary<int, List<string>>();
-    public Dictionary<int, List<string>> RowDistances = new Dictionary<int, List<string>>(); //TODO: List<decimal>
-    public Dictionary<int, List<string>> RowOffsets = new Dictionary<int, List<string>>(); //TODO: List<decimal>
-    public Dictionary<int, List<string>> RowAlphas = new Dictionary<int, List<string>>(); //TODO: List<decimal>
-    public Dictionary<int, List<string>> RowTriangleTags = new Dictionary<int, List<string>>(); //TODO: List<int>
+    public Dictionary<int, List<Vertex>> RowNormals = new Dictionary<int, List<Vertex>>();
+    public Dictionary<int, List<Vertex>> RowOffsetNormals = new Dictionary<int, List<Vertex>>();
     
-    public Dictionary<int, List<string>> AllowedVerts = new Dictionary<int, List<string>>(); //TODO: List<int>
+    public Dictionary<int, List<decimal>> RowDistances = new Dictionary<int, List<decimal>>();
+    public Dictionary<int, List<Vertex>> RowOffsets = new Dictionary<int, List<Vertex>>();
+    public Dictionary<int, List<decimal>> RowAlphas = new Dictionary<int, List<decimal>>();
+    public Dictionary<int, List<int>> RowTriangleTags = new Dictionary<int, List<int>>();
+    
+    public Dictionary<int, List<int>> AllowedVerts = new Dictionary<int, List<int>>();
     
     public DispRows()
     {
@@ -75,7 +79,22 @@ public class DispRows
         {
             string currentNorm = rows[row].Split(new []{"\" \""}, StringSplitOptions.RemoveEmptyEntries)[1];
             currentNorm = currentNorm.Trim('"');
-            RowNormals.Add(row, currentNorm.Split(' ').ToList());
+
+            //Please forgive me for what I am about to do
+            List<Vertex> normalVerts = new List<Vertex>();
+            var splitNorm = currentNorm.Split(' ');
+
+            for (int i = 0; i < splitNorm.Length;)
+            {
+                double x = double.Parse(splitNorm[0 + i]);
+                double y = double.Parse(splitNorm[1 + i]);
+                double z = double.Parse(splitNorm[2 + i]);
+                Vertex vert = new Vertex(x, y, z);
+                normalVerts.Add(vert);
+                i += 3;
+            }
+
+            RowNormals.Add(row, normalVerts);
         }
     }
     
@@ -86,7 +105,21 @@ public class DispRows
         {
             string currentNorm = rows[row].Split(new []{"\" \""}, StringSplitOptions.RemoveEmptyEntries)[1];
             currentNorm = currentNorm.Trim('"');
-            RowOffsetNormals.Add(row, currentNorm.Split(' ').ToList());
+            
+            //Please forgive me for what I am about to do
+            List<Vertex> normalVerts = new List<Vertex>();
+            var splitNorm = currentNorm.Split(' ');
+
+            for (int i = 0; i < splitNorm.Length;)
+            {
+                double x = double.Parse(splitNorm[0 + i]);
+                double y = double.Parse(splitNorm[1 + i]);
+                double z = double.Parse(splitNorm[2 + i]);
+                Vertex vert = new Vertex(x, y, z);
+                normalVerts.Add(vert);
+                i += 3;
+            }
+            RowOffsetNormals.Add(row, normalVerts);
         }
     }
     
@@ -97,7 +130,15 @@ public class DispRows
         {
             string currentDist = rows[row].Split(new []{"\" \""}, StringSplitOptions.RemoveEmptyEntries)[1];
             currentDist = currentDist.Trim('"');
-            RowDistances.Add(row, currentDist.Split(' ').ToList());
+
+            //TODO: This is an awful way to do this!
+            List<decimal> distanceRows = new List<decimal>();
+            foreach (string dist in currentDist.Split(' '))
+            {
+                distanceRows.Add(decimal.Parse(dist));
+            }
+
+            RowDistances.Add(row, distanceRows);
         }
     }
 
@@ -108,7 +149,22 @@ public class DispRows
         {
             string currentOffset = rows[row].Split(new []{"\" \""}, StringSplitOptions.RemoveEmptyEntries)[1];
             currentOffset = currentOffset.Trim('"');
-            RowOffsets.Add(row, currentOffset.Split(' ').ToList());
+            
+            //Please forgive me for what I am about to do
+            List<Vertex> offsetRows = new List<Vertex>();
+            var splitOffset = currentOffset.Split(' ');
+
+            for (int i = 0; i < splitOffset.Length;)
+            {
+                double x = double.Parse(splitOffset[0 + i]);
+                double y = double.Parse(splitOffset[1 + i]);
+                double z = double.Parse(splitOffset[2 + i]);
+                Vertex vert = new Vertex(x, y, z);
+                offsetRows.Add(vert);
+                i += 3;
+            }
+            
+            RowOffsets.Add(row, offsetRows);
         }
     }
     
@@ -119,7 +175,15 @@ public class DispRows
         {
             string currentAlpha = rows[row].Split(new []{"\" \""}, StringSplitOptions.RemoveEmptyEntries)[1];
             currentAlpha = currentAlpha.Trim('"');
-            RowAlphas.Add(row, currentAlpha.Split(' ').ToList());
+            
+            //TODO: This is an awful way to do this!
+            List<decimal> alphaRows = new List<decimal>();
+            foreach (string dist in currentAlpha.Split(' '))
+            {
+                alphaRows.Add(decimal.Parse(dist));
+            }
+            
+            RowAlphas.Add(row, alphaRows);
         }
     }
     
@@ -130,7 +194,15 @@ public class DispRows
         {
             string currentAlpha = rows[row].Split(new []{"\" \""}, StringSplitOptions.RemoveEmptyEntries)[1];
             currentAlpha = currentAlpha.Trim('"');
-            RowTriangleTags.Add(row, currentAlpha.Split(' ').ToList());
+            
+            //TODO: This is an awful way to do this!
+            List<int> distanceRows = new List<int>();
+            foreach (string dist in currentAlpha.Split(' '))
+            {
+                distanceRows.Add(int.Parse(dist));
+            }
+            
+            RowTriangleTags.Add(row, distanceRows);
         }
     }
     
@@ -142,7 +214,15 @@ public class DispRows
             int idx = int.Parse(rows[row].Split(new []{"\" \""}, StringSplitOptions.RemoveEmptyEntries)[0].Trim('"')); //TODO: Figure out what this actually is?
             string currentAv = rows[row].Split(new []{"\" \""}, StringSplitOptions.RemoveEmptyEntries)[1];
             currentAv = currentAv.Trim('"');
-            AllowedVerts.Add(idx, currentAv.Split(' ').ToList());
+            
+            //TODO: This is an awful way to do this!
+            List<int> distanceRows = new List<int>();
+            foreach (string dist in currentAv.Split(' '))
+            {
+                distanceRows.Add(int.Parse(dist));
+            }
+            
+            AllowedVerts.Add(idx, distanceRows);
         }
     }
 }
