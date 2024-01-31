@@ -12,6 +12,10 @@ namespace VMFLib.Parsers
 
         public VClassReader(string VmfPath)
         {
+            if (!File.Exists(VmfPath))
+            {
+                throw new FileNotFoundException();
+            }
             Reader = new StreamReader(VmfPath);
         }
 
