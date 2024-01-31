@@ -753,7 +753,7 @@ namespace VMFLib.Parsers
                     } break;
                     case "solid":
                     {
-                        entity.Solid = ReadSolid();
+                        entity.Solids.Add(ReadSolid());
                     } break;
                     default:
                     {

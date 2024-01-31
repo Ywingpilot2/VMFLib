@@ -26,6 +26,10 @@ public class VClassWriter : IDisposable
     {
         switch (vClass.ClassHeader)
         {
+            case "group":
+            {
+                WriteGroup((Group)vClass);
+            } break;
             case "vertices_plus":
             {
                 WriteVPlus((VerticesPlus)vClass);
@@ -83,6 +87,37 @@ public class VClassWriter : IDisposable
     #endregion
 
     #region Special Classes
+
+    #region Editor Info
+
+    /// <summary>
+    /// Writes a group class
+    /// </summary>
+    private protected void WriteGroup(Group group)
+    {
+        WriteIndentedLine(group.ClassHeader);
+        WriteIndentedLine("{"); // Need our brackets!
+        NextLevel(); //Heading into our properties
+        
+        //Write the editor
+        WriteClass(group.Editor);
+        
+        //Properties get written first
+        foreach (VProperty property in group.Properties.Values)
+        {
+            WriteProperty(property);
+        }
+
+        foreach (BaseVClass subClass in group.SubClasses)
+        {
+            WriteClass(subClass); //Pass this back to WriteClass() in case this is a special class
+        }
+        
+        PreviousLevel();
+        WriteIndentedLine("}");
+    }
+
+    #endregion
 
     #region World Info
 
@@ -257,7 +292,7 @@ public class VClassWriter : IDisposable
             PreviousLevel();
             WriteIndentedLine("}");
             
-            WriteIndentedLine("alpha");
+            WriteIndentedLine("alphas");
             WriteIndentedLine("{");
             NextLevel();
             for (int i = 0; i < displacement.Rows.RowAlphas.Count; i++)
@@ -356,9 +391,13 @@ public class VClassWriter : IDisposable
             WriteIndentedLine("}");
         }
 
-        if (entity.Solid != null)
+        if (entity.Solids.Count > 0)
         {
-            WriteClass(entity.Solid);
+            foreach (Solid solid in entity.Solids)
+            {
+                WriteClass(solid);
+            }
+            
         }
 
         if (entity.Hidden != null)
