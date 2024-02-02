@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using VMFLib.Objects;
+﻿using VMFLib.Objects;
 using VMFLib.VClass;
 
 namespace VMFLib.Parsers;
@@ -100,8 +96,11 @@ public class VClassWriter : IDisposable
         NextLevel(); //Heading into our properties
         
         //Write the editor
-        WriteClass(group.Editor);
-        
+        if (group.Editor != null)
+        {
+            WriteClass(group.Editor);
+        }
+
         //Properties get written first
         foreach (VProperty property in group.Properties.Values)
         {

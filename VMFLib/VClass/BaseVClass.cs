@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace VMFLib.VClass;
+﻿namespace VMFLib.VClass;
 
 public abstract class BaseVClass
 {
@@ -25,20 +22,19 @@ public abstract class BaseVClass
     /// <param name="property"></param>
     public void AddProperty(VProperty property)
     {
-        if (Properties.Keys.Contains(property.Name))
+        if (Properties.Keys.Contains(property.Name) || property.Name == null)
             return;
         Properties.Add(property.Name, property);
     }
 
     public BaseVClass()
     {
-        Properties = new Dictionary<string, VProperty>();
         SubClasses = new List<BaseVClass>();
     }
 
     public override string ToString()
     {
-        return ClassHeader ?? base.ToString();
+        return ClassHeader;
     }
 }
 
@@ -48,7 +44,7 @@ public abstract class BaseVClass
 public class GenericVClass : BaseVClass
 {
     public override string ClassHeader { get; }
-    public override Dictionary<string, VProperty> Properties { get; set; }
+    public override Dictionary<string, VProperty> Properties { get; set; } = new Dictionary<string, VProperty>();
 
     public GenericVClass(string classHeader)
     {

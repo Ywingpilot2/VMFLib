@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VMFLib", "VMFLib.csproj", "{0A941FC3-6BC4-409E-9642-60B6CDBEED73}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VMfTest", "VMfTest\VMfTest.csproj", "{75672E57-5F22-47CF-B1B4-ACA968C0CC88}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VMFLib", "VMFLib\VMFLib.csproj", "{4EB58C1B-CFDD-421E-A1DF-0A3FD49CDB99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -10,13 +8,9 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0A941FC3-6BC4-409E-9642-60B6CDBEED73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0A941FC3-6BC4-409E-9642-60B6CDBEED73}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0A941FC3-6BC4-409E-9642-60B6CDBEED73}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0A941FC3-6BC4-409E-9642-60B6CDBEED73}.Release|Any CPU.Build.0 = Release|Any CPU
-		{75672E57-5F22-47CF-B1B4-ACA968C0CC88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{75672E57-5F22-47CF-B1B4-ACA968C0CC88}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{75672E57-5F22-47CF-B1B4-ACA968C0CC88}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{75672E57-5F22-47CF-B1B4-ACA968C0CC88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EB58C1B-CFDD-421E-A1DF-0A3FD49CDB99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EB58C1B-CFDD-421E-A1DF-0A3FD49CDB99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EB58C1B-CFDD-421E-A1DF-0A3FD49CDB99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EB58C1B-CFDD-421E-A1DF-0A3FD49CDB99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

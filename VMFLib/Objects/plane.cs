@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace VMFLib.Objects;
+﻿namespace VMFLib.Objects;
 
 public class Plane
 {
@@ -18,6 +14,21 @@ public class Plane
             new Vertex(planeVerts[0]),
             new Vertex(planeVerts[1]),
             new Vertex(planeVerts[2]),
+        };
+    }
+
+    public Plane(Vertex[] vertices)
+    {
+        Vertices = vertices;
+    }
+
+    public Plane()
+    {
+        Vertices = new[]
+        {
+            new Vertex(),
+            new Vertex(),
+            new Vertex()
         };
     }
 
@@ -38,6 +49,18 @@ public class UVAxis
     {
         var points = UVAxis.Replace("[", "").Replace("]", "").Split(' ');
         XYZ = new Vertex(double.Parse(points[0]), double.Parse(points[1]), double.Parse(points[2]));
+    }
+
+    public UVAxis(Vertex xyz, double translation = 0.0, double scaling = 0.0)
+    {
+        XYZ = xyz;
+        Translation = translation;
+        Scaling = scaling;
+    }
+
+    public UVAxis()
+    {
+        XYZ = new Vertex();
     }
 
     public override string ToString()

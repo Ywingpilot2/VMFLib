@@ -1,17 +1,16 @@
-﻿using System;
-using VMFLib.Objects;
+﻿using VMFLib.Objects;
 
 namespace VMFLib.VClass
 {
     public class VProperty
     {
-        public string Name;
-        private string _property;
+        public string? Name;
+        private string? _property;
 
-        public VProperty(string name, object value)
+        public VProperty(string? name, object? value)
         {
             Name = name;
-            _property = value.ToString();
+            _property = value?.ToString();
         }
 
         public VProperty(string property)
@@ -95,26 +94,40 @@ namespace VMFLib.VClass
         
         public RGB Rgb()
         {
+            if (_property == null)
+                return new RGB();
+            
             return new RGB(_property);
         }
 
         public Vertex Vertex()
         {
+            if (_property == null)
+                return new Vertex();
+            
             return new Vertex(_property);
         }
         
         public Vec2 Vec2()
         {
+            if (_property == null)
+                return new Vec2();
+            
             return new Vec2(_property);
         }
 
         public Plane Plane()
         {
+            if (_property == null)
+                return new Plane();
+            
             return new Plane(_property);
         }
 
         public UVAxis UvAxis()
         {
+            if (_property == null)
+                return new UVAxis();
             return new UVAxis(_property);
         }
 
@@ -123,7 +136,7 @@ namespace VMFLib.VClass
         /// </summary>
         /// <param name="value"></param>
         /// <returns>Whether or not the operation was a success</returns>
-        public bool Set(object value)
+        public bool Set(object? value)
         {
             if (value == null)
                 return false;
@@ -136,7 +149,7 @@ namespace VMFLib.VClass
         /// 
         /// </summary>
         /// <returns>The name of this property, otherwise the type's name</returns>
-        public override string ToString()
+        public override string? ToString()
         {
             return Name ?? base.ToString();
         }
