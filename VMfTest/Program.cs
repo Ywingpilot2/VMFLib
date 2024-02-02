@@ -18,6 +18,13 @@ namespace VMfTest
             string currentInput = Console.ReadLine();
             while (currentInput != null)
             {
+                //Don't do anything on blank inputs
+                if (currentInput == "" || string.IsNullOrWhiteSpace(currentInput))
+                {
+                    currentInput = Console.ReadLine();
+                    continue;
+                }
+                
                 if (!currentInput.StartsWith("macro"))
                 {
                     string command = currentInput.Split(new[] { "\"" }, StringSplitOptions.RemoveEmptyEntries)[0].Trim();
