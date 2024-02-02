@@ -179,7 +179,7 @@ namespace VMfTest
                             writer.WriteClass(vClass);
                         }
                         stopwatch.Stop();
-                        Console.WriteLine($"saved to {CurrentFile} in {stopwatch.ElapsedMilliseconds / 1000}");
+                        Console.WriteLine($"saved to {CurrentFile} in {stopwatch.ElapsedMilliseconds / 1000.0}");
                         writer.Dispose();
                     }
                     else
