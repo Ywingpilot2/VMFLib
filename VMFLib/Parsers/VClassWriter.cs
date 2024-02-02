@@ -8,9 +8,9 @@ public class VClassWriter : IDisposable
     private protected StreamWriter Writer;
     private protected int Level; //Indentation level; how deep in a class cycle we are
 
-    public VClassWriter(string filePath)
+    public VClassWriter(string vmfPath)
     {
-        Writer = new StreamWriter(filePath);
+        Writer = new StreamWriter(vmfPath);
     }
 
     public VClassWriter(StreamWriter writer)
