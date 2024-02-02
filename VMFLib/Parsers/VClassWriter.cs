@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using VMFLib.Objects;
+﻿using VMFLib.Objects;
 using VMFLib.VClass;
 
 namespace VMFLib.Parsers;
@@ -12,9 +8,9 @@ public class VClassWriter : IDisposable
     private protected StreamWriter Writer;
     private protected int Level; //Indentation level; how deep in a class cycle we are
 
-    public VClassWriter(string filePath)
+    public VClassWriter(string vmfPath)
     {
-        Writer = new StreamWriter(filePath);
+        Writer = new StreamWriter(vmfPath);
     }
 
     public VClassWriter(StreamWriter writer)
@@ -100,8 +96,11 @@ public class VClassWriter : IDisposable
         NextLevel(); //Heading into our properties
         
         //Write the editor
-        WriteClass(group.Editor);
-        
+        if (group.Editor != null)
+        {
+            WriteClass(group.Editor);
+        }
+
         //Properties get written first
         foreach (VProperty property in group.Properties.Values)
         {

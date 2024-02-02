@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using VMFLib.Objects;
+﻿using VMFLib.Objects;
 
 namespace VMFLib.VClass;
 
 public class Entity : BaseVClass
 {
     public override string ClassHeader => "entity";
-    public override Dictionary<string, VProperty> Properties { get; set; }
+    public override Dictionary<string, VProperty> Properties { get; set; } = new Dictionary<string, VProperty>();
     public List<Connection> Connections = new List<Connection>();
     public List<Solid> Solids = new List<Solid>();
-    public Hidden Hidden;
-    public Editor Editor;
+    public Hidden? Hidden;
+    public Editor? Editor;
 
     public int Id => Properties["id"].Int();
     public string ClassName => Properties["classname"].Str();

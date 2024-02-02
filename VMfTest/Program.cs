@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
+﻿using System.Diagnostics;
 using VMFLib.Parsers;
 using VMFLib.VClass;
 
@@ -10,12 +6,12 @@ namespace VMfTest
 {
     internal class Program
     {
-        public static string CurrentFile;
+        public static string? CurrentFile;
         public static List<BaseVClass> VClasses = new List<BaseVClass>();
-        public static BaseVClass SelectedClass;
+        public static BaseVClass? SelectedClass;
         public static void Main(string[] args)
         {
-            string currentInput = Console.ReadLine();
+            string? currentInput = Console.ReadLine();
             while (currentInput != null)
             {
                 //Don't do anything on blank inputs
@@ -33,11 +29,10 @@ namespace VMfTest
                 }
                 else //Macros allow the user to send in several commands to be executed in order
                 {
-                    string command = currentInput.Split(new[] { "'" }, StringSplitOptions.RemoveEmptyEntries)[0].Trim();
                     string param = currentInput.Split(new[] { "'" }, StringSplitOptions.RemoveEmptyEntries).Last().Trim('\'');
                     foreach (string macro in param.Split(','))
                     {
-                        command = macro.Split(new[] { "\"" }, StringSplitOptions.RemoveEmptyEntries)[0].Trim();
+                        string command = macro.Split(new[] { "\"" }, StringSplitOptions.RemoveEmptyEntries)[0].Trim();
                         param = macro.Split(new[] { "\"" }, StringSplitOptions.RemoveEmptyEntries).Last().Trim('"');
                         RunCommand(command, param);
                     }
@@ -56,12 +51,13 @@ namespace VMfTest
                     if (!File.Exists(param))
                     {
                         Console.WriteLine($"Specified file does not exist: {param}");
+                        return;
                     }
                     VClassReader classReader = new VClassReader(param);
                     Stopwatch stopwatch = new Stopwatch();
                     stopwatch.Start();
                         
-                    BaseVClass currentClass = classReader.ReadClass();
+                    BaseVClass? currentClass = classReader.ReadClass();
                     while (currentClass != null)
                     {
                         Console.WriteLine($"Successfully read class {currentClass}!");
@@ -82,7 +78,7 @@ namespace VMfTest
                     Stopwatch stopwatch = new Stopwatch();
                     stopwatch.Start();
                         
-                    BaseVClass currentClass = classReader.ReadClass();
+                    BaseVClass? currentClass = classReader.ReadClass();
                     while (currentClass != null)
                     {
                         Console.WriteLine($"Successfully read class {currentClass}!");
@@ -117,8 +113,7 @@ namespace VMfTest
                 } break;
                 case "select":
                 {
-                    int idx = 0;
-                    if (int.TryParse(param, out idx) && idx < VClasses.Count)
+                    if (int.TryParse(param, out int idx) && idx < VClasses.Count)
                     {
                         SelectedClass = VClasses[idx];
                         Console.WriteLine($"Selected Class {SelectedClass} at index {idx}!");
@@ -174,16 +169,23 @@ namespace VMfTest
                 } break;
                 case "save":
                 {
-                    var writer = new VClassWriter(CurrentFile);
-                    Stopwatch stopwatch = new Stopwatch();
-                    stopwatch.Start();
-                    foreach (BaseVClass vClass in VClasses)
+                    if (CurrentFile != null)
                     {
-                        writer.WriteClass(vClass);
+                        var writer = new VClassWriter(CurrentFile);
+                        Stopwatch stopwatch = new Stopwatch();
+                        stopwatch.Start();
+                        foreach (BaseVClass vClass in VClasses)
+                        {
+                            writer.WriteClass(vClass);
+                        }
+                        stopwatch.Stop();
+                        Console.WriteLine($"saved to {CurrentFile} in {stopwatch.ElapsedMilliseconds / 1000.0}");
+                        writer.Dispose();
                     }
-                    stopwatch.Stop();
-                    Console.WriteLine($"saved to {CurrentFile} in {stopwatch.ElapsedMilliseconds / 1000}");
-                    writer.Dispose();
+                    else
+                    {
+                        Console.WriteLine("No file is currently open. Please use readadd to open a file.");
+                    }
                 } break;
                 case "saveas":
                 {
