@@ -7,13 +7,13 @@ namespace VMFLib.Parsers
     {
         private protected StreamReader Reader;
 
-        public VClassReader(string VmfPath)
+        public VClassReader(string vmfPath)
         {
-            if (!File.Exists(VmfPath))
+            if (!File.Exists(vmfPath))
             {
                 throw new FileNotFoundException();
             }
-            Reader = new StreamReader(VmfPath);
+            Reader = new StreamReader(vmfPath);
         }
 
         public VClassReader(StreamReader streamReader)
